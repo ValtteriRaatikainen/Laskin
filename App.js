@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
-import { StyleSheet, View,Button, Text, TextInput} from 'react-native';
+import { StyleSheet, View,Button, Text, TextInput, FlatList} from 'react-native';
 
 export default function App() {
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
   const [result, setResult] = useState('');
+  const [data, setData] = useState([]);
 
   const plusPressed = () => {
-    setResult(Number(num1) + Number(num2));
+    setNum1(parseFloat(num1));
+    setNum1(parseFloat(num2));
+    const sum = parseFloat(num1) + parseFloat(num2);
+    setResult(sum);
+    setData([...data, { key: `${num1} + ${num2} = ${sum}` }]);
+    setNum1('');
+    setNum2('');
   };
 
   const minusPressed = () => {
-    setResult(Number(num1) - Number(num2));
+    setNum1(parseFloat(num1));
+    setNum1(parseFloat(num2));
+    const subtract = parseFloat(num1) - parseFloat(num2);
+    setResult(subtract);
+    setData([...data, { key: `${num1} - ${num2} = ${subtract}` }]);
+    setNum1('');
+    setNum2('');
   };
 
   return (
@@ -23,6 +36,8 @@ export default function App() {
         <Button onPress={plusPressed} title="+" />
         <Button onPress={minusPressed} title="-" />
       </View>
+      <Text>History:</Text>
+      <FlatList data={data} renderItem={({item}) => <Text>{item.key}</Text>} />
     </View>
   );
 }
@@ -30,6 +45,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 300,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -43,12 +59,5 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
-  },
-  historyItem: {
-    backgroundColor: '#eee',
-    padding: 10,
-    marginVertical: 5,
-    width: 200,
-    alignItems: 'center',
   },
 });
